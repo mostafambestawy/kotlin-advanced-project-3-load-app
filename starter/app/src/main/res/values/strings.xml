@@ -16,6 +16,10 @@
     <string name="title_2">Load App - Current Repository By Udacity</string>
     <string name="title_3">Retrofit - Type-safe HTTP Client for Android and Java By Square . Inc</string>
 
+    <string name="url1">https://github.com/bumptech/glide</string>
+    <string name="url2">https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter</string>
+    <string name="url3">https://github.com/square/retrofit</string>
+
 
 
 </resources>
