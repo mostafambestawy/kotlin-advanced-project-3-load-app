@@ -75,6 +75,9 @@
         android:layout_height="60dp"
         android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        app:LoadingButtonBackgroundColor = "#07C2AA"
+        app:LoadingButtonTextColor="#FFFFFF"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

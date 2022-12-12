@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.withStyledAttributes
 import kotlin.properties.Delegates
 
 class LoadingButton @JvmOverloads constructor(
@@ -16,17 +17,10 @@ class LoadingButton @JvmOverloads constructor(
 
     private val valueAnimator = ValueAnimator()
 
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        style = Paint.Style.FILL
-        textAlign = Paint.Align.CENTER
-        textSize = 55.0f
-        //TODO Pass color as attribute
-        color = context.getColor(R.color.colorPrimary)
-    }
-    //TODO Pass text as attribute
+
     private var text = "Download"
-    //TODO Pass color text as attribute
-    private val colorText = context.getColor(R.color.white)
+    private var colorText = 0
+    private var colorBackground = 0
 
 
     private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
@@ -39,6 +33,19 @@ class LoadingButton @JvmOverloads constructor(
         /** enable performClick**/
         isClickable = true
 
+        /** initialize cutom attributes**/
+        context.withStyledAttributes(attrs, R.styleable.LoadingButton){
+            colorText = getColor(R.styleable.LoadingButton_LoadingButtonTextColor,0)
+            colorBackground = getColor(R.styleable.LoadingButton_LoadingButtonBackgroundColor,0)
+
+        }
+
+    }
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+        textAlign = Paint.Align.CENTER
+        textSize = 55.0f
+        color = colorBackground
     }
 
     override fun performClick(): Boolean {
@@ -47,7 +54,7 @@ class LoadingButton @JvmOverloads constructor(
         /** actions to performed on click **/
         buttonState = ButtonState.Clicked
         text = "We arw Loading "
-        paint.color = context.getColor(R.color.colorPrimary)
+        paint.color = colorBackground
         /** invalidate changes**/
         invalidate()
 
