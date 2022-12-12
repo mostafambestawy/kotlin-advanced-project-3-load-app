@@ -19,7 +19,8 @@
     <string name="url1">https://github.com/bumptech/glide</string>
     <string name="url2">https://github.com/udacity/nd940-c3-advanced-android-programming-project-starter</string>
     <string name="url3">https://github.com/square/retrofit</string>
-
+    <string name="download">Download</string>
+    <string name="we_are_loading">We are Loading </string>
 
 
 </resources>

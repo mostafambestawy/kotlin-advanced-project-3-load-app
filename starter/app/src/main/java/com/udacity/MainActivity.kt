@@ -1,5 +1,6 @@
 package com.udacity
 
+import android.animation.ObjectAnimator
 import android.app.DownloadManager
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -7,8 +8,11 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import kotlinx.android.synthetic.main.activity_main.*
@@ -31,8 +35,20 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
         custom_button.setOnClickListener {
-            //download()
+            download()
+            animateCustomButton()
+
         }
+    }
+
+
+    private fun animateCustomButton() {
+        var animator = ObjectAnimator.ofArgb(custom_button,
+            "LoadingButtonBackgroundColor"
+            //,getColor(R.color.colorPrimary)
+            ,Color.BLACK)
+        animator.duration = 3000
+        animator.start()
     }
 
     private val receiver = object : BroadcastReceiver() {
