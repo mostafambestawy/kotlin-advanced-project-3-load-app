@@ -4,7 +4,6 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import kotlin.properties.Delegates
@@ -25,7 +24,7 @@ class LoadingButton @JvmOverloads constructor(
         color = context.getColor(R.color.colorPrimary)
     }
     //TODO Pass text as attribute
-    private val text = "Download"
+    private var text = "Download"
     //TODO Pass color text as attribute
     private val colorText = context.getColor(R.color.white)
 
@@ -37,8 +36,24 @@ class LoadingButton @JvmOverloads constructor(
 
 
     init {
+        /** enable performClick**/
+        isClickable = true
 
     }
+
+    override fun performClick(): Boolean {
+        /** the call super.performClick() must happen first **/
+        super.performClick()
+        /** actions to performed on click **/
+        buttonState = ButtonState.Clicked
+        text = "We arw Loading "
+        paint.color = context.getColor(R.color.colorPrimary)
+        /** invalidate changes**/
+        invalidate()
+
+        return true
+    }
+
 
 
 
@@ -66,17 +81,51 @@ class LoadingButton @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.save()
-        canvas?.drawRect(0f,0f,widthSize.toFloat(),heightSize.toFloat(),paint)
-        canvas?.restore()
-        canvas?.save()
-        /** add paint.textSize to height half to center text vertically  **/
-        canvas?.translate((0.5*widthSize).toFloat(),(0.5*(heightSize+paint.textSize)).toFloat())
+        drawView(canvas!!)
+        canvas.save()
+
+    }
+
+    private fun drawView(canvas: Canvas) {
+        when (buttonState){
+            ButtonState.Completed ->{
+                drawButtonRectangleWithText(canvas)
+            }
+            ButtonState.Clicked ->{
+                drawClicked(canvas)
+            }
+            ButtonState.Loading ->{
+                drawLoading(canvas)
+            }
+        }
+
+    }
+
+    private fun drawButtonRectangleWithText(canvas: Canvas) {
+        canvas.save()
+        canvas.drawRect(0f,0f,widthSize.toFloat(),heightSize.toFloat(),paint)
+        canvas.restore()
+        canvas.save()
+        /** text shifted upwards by text size value
+         * -> add paint.textSize to height half to center text vertically **/
+
+        canvas.translate((0.5*widthSize).toFloat(),(0.5*(heightSize+paint.textSize)).toFloat())
         paint.color = colorText
-        canvas?.drawText(text,0f,0f,paint)
-        canvas?.restore()
+        canvas.drawText(text,0f,0f,paint)
+
+    }
+
+
+
+    private fun drawClicked(canvas: Canvas) {
+        drawButtonRectangleWithText(canvas)
 
 
     }
+    private fun drawLoading(canvas: Canvas) {
+
+    }
+
 
 
 
