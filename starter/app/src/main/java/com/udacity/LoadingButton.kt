@@ -43,7 +43,7 @@ class LoadingButton @JvmOverloads constructor(
 
 
 
-    private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
+    var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
 
         when (new) {
             ButtonState.Completed -> {
@@ -51,16 +51,15 @@ class LoadingButton @JvmOverloads constructor(
                 text = context.getString(R.string.download)
                 loading = false
             }
-            ButtonState.Clicked -> {
+            ButtonState.Loading -> {
                 valueAnimator.start()
                 text = context.getString(R.string.we_are_loading)
                 loading = true
             }
-            ButtonState.Loading -> {
-                text = context.getString(R.string.we_are_loading)
-                loading = true
+            ButtonState.Clicked -> {
             }
         }
+        invalidate()
 
 
     }
@@ -87,12 +86,16 @@ class LoadingButton @JvmOverloads constructor(
     }
 
     override fun performClick(): Boolean {
+        /** handling state from onclick listener as if we handle button state in perform click
+         * the button animates even if the there is an error in selecting repository**/
+
+
         /** the call super.performClick() must happen first **/
         super.performClick()
         /** actions to performed on click **/
-        buttonState = ButtonState.Clicked
+        ///buttonState = ButtonState.Clicked
         /** invalidate changes**/
-        invalidate()
+        //invalidate()
 
         return true
     }

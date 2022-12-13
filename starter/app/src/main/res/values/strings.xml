@@ -21,6 +21,11 @@
     <string name="url3">https://github.com/square/retrofit</string>
     <string name="download">Download</string>
     <string name="we_are_loading">We are Loading </string>
+    <string name="choose_one_repo">choose at least one repository to download</string>
+    <string name="download_notification_channel_id" translatable="false">download_default_channel</string>
+    <string name="download_notification_title">Download Completed</string>
+
+
 
 
 </resources>

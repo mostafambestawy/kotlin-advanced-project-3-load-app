@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="mainActivityViewModel"
+            type="com.udacity.MainActivityViewModel" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -43,6 +49,7 @@
             android:checked="false"
             android:layout_margin="8dp"
             android:textAlignment="textStart"
+            android:onCheckedChanged="@{(viewButton,isChecked) -> mainActivityViewModel.setUrl1(isChecked)}"
             />
         <RadioButton
             android:id="@+id/url2RadioButton"
@@ -52,6 +59,7 @@
             android:checked="false"
             android:layout_margin="8dp"
             android:textAlignment="textStart"
+            android:onCheckedChanged="@{(viewButton,isChecked) -> mainActivityViewModel.setUrl2(isChecked)}"
             />
         <RadioButton
             android:id="@+id/url3RadioButton"
@@ -61,6 +69,7 @@
             android:checked="false"
             android:layout_margin="8dp"
             android:textAlignment="textStart"
+            android:onCheckedChanged="@{(viewButton,isChecked) -> mainActivityViewModel.setUrl3(isChecked)}"
 
             />
 
@@ -81,3 +90,4 @@
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
