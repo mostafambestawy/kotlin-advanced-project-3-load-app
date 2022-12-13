@@ -7,9 +7,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -81,16 +81,34 @@ class MainActivity : AppCompatActivity() {
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            val intentAction:String = intent?.action!!
-            if(intentAction.equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
+            val intentAction: String = intent?.action!!
+            if (intentAction.equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                 custom_button.buttonState = ButtonState.Completed
                 val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
-                pushNotification(id!!)
+                if (downloadID == id!!) {
+                    val succeeded: Boolean = getDownLoadStatus(id)
+                    val downloadedFileName:String = getDownloadedFileName()
+                    pushNotification(downloadedFileName, succeeded)
+                }
             }
         }
     }
 
-    private fun pushNotification(id: Long) {
+    private fun getDownLoadStatus(id: Long?): Boolean {
+        var succeeded: Boolean = false
+        val query = DownloadManager.Query().setFilterById(id!!);
+        val cursor: Cursor = getSystemService(DownloadManager::class.java).query(query);
+        if (cursor.moveToFirst()) {
+            val statusColumnIndex: Int =
+                cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
+            succeeded =
+                cursor.getInt(statusColumnIndex) == DownloadManager.STATUS_SUCCESSFUL
+        }
+        return succeeded
+    }
+
+
+    private fun pushNotification(downloadedFileName: String, succeeded: Boolean) {
 
     }
 
@@ -105,10 +123,21 @@ class MainActivity : AppCompatActivity() {
                 .setAllowedOverRoaming(true)
 
         val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-        downloadID = downloadManager.enqueue(request) // enqueue puts the download request in the queue.
+        downloadID =
+            downloadManager.enqueue(request) // enqueue puts the download request in the queue.
     }
-    private fun getSelectedURL():String{
-        return when(mainActivityViewModel.selectedUrlNo){
+
+    private fun getDownloadedFileName(): String {
+        return when (mainActivityViewModel.selectedUrlNo) {
+            1 -> getString(R.string.title_1)
+            2 -> getString(R.string.title_2)
+            3 -> getString(R.string.title_3)
+            else -> ""
+        }
+    }
+
+    private fun getSelectedURL(): String {
+        return when (mainActivityViewModel.selectedUrlNo) {
             1 -> getString(R.string.url1)
             2 -> getString(R.string.url2)
             3 -> getString(R.string.url3)
