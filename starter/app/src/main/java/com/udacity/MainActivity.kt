@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
         return if(succeeded) StringBuilder().append(getString(R.string.file)
         ).append(downloadedFileName).append(getString(R.string.downloaded_successfully)).toString()
         else StringBuilder().append(getString(R.string.downloading_file)).append(downloadedFileName).append(getString(
-                    R.string.failed)).toString()
+                    R.string.pre_quote_failed)).toString()
     }
     private fun download() {
 

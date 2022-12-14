@@ -30,7 +30,12 @@
     <string name="file">File \"</string>
     <string name="downloaded_successfully"> \" downloaded successfully</string>
     <string name="downloading_file"> Downloading File  \" </string>
-    <string name="failed">\" failed</string>
+    <string name="pre_quote_failed">\" failed</string>
+    <string name="file_label">File</string>
+    <string name="status_label">Status</string>
+    <string name="success">Success</string>
+    <string name="failed">Failed</string>
+    <string name="ok">OK</string>
 
 
 </resources>

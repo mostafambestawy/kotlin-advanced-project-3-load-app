@@ -49,7 +49,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
     detailActivityIntent.putExtra("succeeded", succeeded)
     
     val detailActivityPendingIntent: PendingIntent =
-        PendingIntent.getBroadcast(applicationContext, 1, detailActivityIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        PendingIntent.getActivity(applicationContext, 1, detailActivityIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
     
 
     /** get an instance of NotificationCompat.Builder **/
