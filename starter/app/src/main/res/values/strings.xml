@@ -22,10 +22,15 @@
     <string name="download">Download</string>
     <string name="we_are_loading">We are Loading </string>
     <string name="choose_one_repo">choose at least one repository to download</string>
+    <string name="download_notification_channel_name" translatable="true">Downloading Notifications</string>
     <string name="download_notification_channel_id" translatable="false">download_default_channel</string>
+    <string name="download_notification_channel_description" translatable="false">Download App by Udacity Notifications</string>
     <string name="download_notification_title">Download Completed</string>
-
-
+    <string name="details">Details</string>
+    <string name="file">File \"</string>
+    <string name="downloaded_successfully"> \" downloaded successfully</string>
+    <string name="downloading_file"> Downloading File  \" </string>
+    <string name="failed">\" failed</string>
 
 
 </resources>

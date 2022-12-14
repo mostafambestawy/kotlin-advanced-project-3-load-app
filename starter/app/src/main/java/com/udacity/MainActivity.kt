@@ -1,6 +1,7 @@
 package com.udacity
 
 import android.app.DownloadManager
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -8,16 +9,19 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.database.Cursor
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.udacity.databinding.ContentMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-
+import com.udacity.utils.sendNotification
 
 class MainActivity : AppCompatActivity() {
 
@@ -86,15 +90,15 @@ class MainActivity : AppCompatActivity() {
                 custom_button.buttonState = ButtonState.Completed
                 val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
                 if (downloadID == id!!) {
-                    val succeeded: Boolean = getDownLoadStatus(id)
+                    val succeeded: Boolean = getDownLoadStatus(id!!)
                     val downloadedFileName:String = getDownloadedFileName()
-                    pushNotification(downloadedFileName, succeeded)
+                    pushNotification(id.toInt(),downloadedFileName, succeeded)
                 }
             }
         }
     }
 
-    private fun getDownLoadStatus(id: Long?): Boolean {
+    private fun getDownLoadStatus(id: Long): Boolean {
         var succeeded: Boolean = false
         val query = DownloadManager.Query().setFilterById(id!!);
         val cursor: Cursor = getSystemService(DownloadManager::class.java).query(query);
@@ -108,10 +112,50 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun pushNotification(downloadedFileName: String, succeeded: Boolean) {
-
+    private fun pushNotification(id:Int, downloadedFileName: String, succeeded: Boolean) {
+        createChannel(
+            getString(R.string.download_notification_channel_id),
+            getString(R.string.download_notification_channel_name)
+        )
+        val message:String = getMessage(downloadedFileName,succeeded)
+        val notificationManager = ContextCompat.getSystemService(applicationContext, NotificationManager::class.java) as NotificationManager
+        notificationManager.sendNotification(message,applicationContext,downloadedFileName,succeeded)
     }
+    private fun createChannel(channelId: String, channelName: String) {
+        // START create a channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                // change importance
+                NotificationManager.IMPORTANCE_HIGH
+            )
+                // disable badges for this channel
+                .apply {
+                    setShowBadge(false)
+                }
 
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.description =
+                getString(R.string.download_notification_channel_description)
+
+            val notificationManager = getSystemService(
+                NotificationManager::class.java
+            )
+
+            notificationManager.createNotificationChannel(notificationChannel)
+
+        }
+    }
+    private fun getMessage(downloadedFileName:String,succeeded:Boolean):String{
+        return if(succeeded) StringBuilder().append(getString(R.string.file)
+        ).append(downloadedFileName).append(getString(R.string.downloaded_successfully)).toString()
+        else StringBuilder().append(getString(R.string.downloading_file)).append(downloadedFileName).append(getString(
+                    R.string.failed)).toString()
+    }
     private fun download() {
 
         val request =

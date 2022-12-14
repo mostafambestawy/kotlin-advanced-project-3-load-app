@@ -6,11 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.core.app.NotificationCompat
+import com.udacity.DetailActivity
 import com.udacity.MainActivity
 import com.udacity.R
 
 
-fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context) {
+fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context,downloadedFileName:String,succeeded:Boolean) {
 
 
     /**  create intent **/
@@ -41,22 +42,24 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .bigLargeIcon(null)
 
 
-    /** add snooze action **/
-    /*
-    val snoozeIntent = Intent(applicationContext, SnoozeReceiver::class.java)
-    val snoozePendingIntent: PendingIntent =
-        PendingIntent.getBroadcast(applicationContext, REQUEST_CODE, snoozeIntent, FLAGS)
-    */
+    /** add open details activity action **/
+    
+    val detailActivityIntent = Intent(applicationContext, DetailActivity::class.java)
+    detailActivityIntent.putExtra("downloadedFileName",downloadedFileName)
+    detailActivityIntent.putExtra("succeeded", succeeded)
+    
+    val detailActivityPendingIntent: PendingIntent =
+        PendingIntent.getBroadcast(applicationContext, 1, detailActivityIntent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+    
 
     /** get an instance of NotificationCompat.Builder **/
     // Build the notification
     val builder = NotificationCompat.Builder(
         applicationContext,
-        /** use the new 'fcm' notification channel **/
+        /** use the new 'download' notification channel **/
         applicationContext.getString(R.string.download_notification_channel_id)
     )
         /** set title, text and icon to builder **/
-        //TODO make small icon more general by passing icon parameter
         .setSmallIcon(R.drawable.ic_launcher_foreground)
         .setContentTitle(applicationContext.getString(R.string.download_notification_title))
         .setContentText(messageBody)
@@ -65,12 +68,12 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         /** add style to builder **/
         .setStyle(bigPicStyle)
         .setLargeIcon(logoImage)
-        /** add snooze action **/
-        /*.addAction(
+        /** add details action **/
+        .addAction(
             R.drawable.ic_launcher_foreground,
-            applicationContext.getString(R.string.snooze),
-            snoozePendingIntent
-        )*/
+            applicationContext.getString(R.string.details),
+            detailActivityPendingIntent
+        )
         /** set priority **/
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setAutoCancel(true)
