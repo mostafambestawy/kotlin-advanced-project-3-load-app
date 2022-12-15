@@ -9,7 +9,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/statusLabel"
-            app:layout_constraintTop_toBottomOf="@+id/fileTextView" />
+            app:layout_constraintBottom_toBottomOf="@+id/statusLabel"
+            />
+
+        />
 
     </ConstraintSet>
 
@@ -20,7 +23,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fileTextView" />
+            app:layout_constraintBottom_toBottomOf="@+id/statusLabel"
+            />
+
+        />
     </ConstraintSet>
 
     <Transition
@@ -34,7 +40,7 @@
         android:id="@+id/t2"
         app:constraintSetStart="@+id/end"
         app:constraintSetEnd="@id/start"
-        app:duration="9000"
+        app:duration="2000"
         app:autoTransition="jumpToEnd"
 
         />
